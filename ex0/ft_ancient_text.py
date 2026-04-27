@@ -1,5 +1,4 @@
 import sys
-import typing
 
 def display_contents()-> None:
     if len(sys.argv) != 2:

@@ -1,5 +1,11 @@
 import sys
 
+def my_input(formatt)->str:
+    sys.stdout.write(formatt)
+    sys.stdout.flush()
+    new_file = sys.stdin.readline().strip()
+    return new_file
+
 def display_contents()-> None:
     if len(sys.argv) != 2:
         print("Usage: ft_ancient_text.py <file>")
@@ -10,7 +16,7 @@ def display_contents()-> None:
         print(f"Accessing file '{file_name}'")
         f = open(file_name)
     except OSError as error:
-        print(f"Error opening file '{file_name}': {error}")
+        sys.stderr.write(f"[STDERR] Error opening file '{file_name}': {error}\n")
     else:
         print("---")
         content = f.read()
@@ -23,17 +29,20 @@ def display_contents()-> None:
         for line in contents[1:]:
             new_contents = "#\n".join([new_contents, line])
         print(f"{new_contents}\n---")
-        new_file = input("Enter new file name (or empty): ")
+        new_file = my_input("Enter new file name (or empty): ")
         if not new_file:
             print("Not saving data.")
         else:
-            nf = open(new_file, "w")
-            nf.write(new_contents)
-            nf.close()
             print(f"Saving data to '{new_file}'")
-            print(f"Data saved in file '{new_file}'.\n")
+            try:
+                nf = open(new_file, "w")
+            except OSError as error:
+                sys.stderr.write(f"[STDERR] Error opening file '{new_file}': {error}\n")
+                print("Data not saved.")
+            else:
+                print(f"Data saved in file '{new_file}'.\n")
+                nf.write(new_contents)
+                nf.close()
 
 if __name__ == "__main__":
      display_contents()
-
-
