@@ -15,7 +15,7 @@ def display_contents()-> None:
     try:
         print(f"Accessing file '{file_name}'")
         f = open(file_name)
-    except OSError as error:
+    except Exception as error:
         sys.stderr.write(f"[STDERR] Error opening file '{file_name}': {error}\n")
     else:
         print("---")
@@ -25,9 +25,12 @@ def display_contents()-> None:
         print("\nTransform data:\n---\n")
         f.close()
         contents = content.rsplit('\n')
-        new_contents = contents[0]
-        for line in contents[1:]:
-            new_contents = "#\n".join([new_contents, line])
+        if len(contents) == 1:
+            new_contents = contents[0] + "#\n"
+        else:
+            new_contents = contents[0]
+            for line in contents[1:]:
+                new_contents = "#\n".join([new_contents, line])
         print(f"{new_contents}\n---")
         new_file = my_input("Enter new file name (or empty): ")
         if not new_file:
@@ -36,7 +39,7 @@ def display_contents()-> None:
             print(f"Saving data to '{new_file}'")
             try:
                 nf = open(new_file, "w")
-            except OSError as error:
+            except Exception as error:
                 sys.stderr.write(f"[STDERR] Error opening file '{new_file}': {error}\n")
                 print("Data not saved.")
             else:

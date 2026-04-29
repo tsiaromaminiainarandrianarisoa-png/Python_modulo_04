@@ -8,7 +8,7 @@ def secure_archive(file_name: str, action: str = '', content: str = '') -> tuple
 			with open(file_name, "w") as f:
 				f.write(content)
 				content = "Content successfully written to file"
-	except OSError as error:
+	except Exception as error:
 		content = str(error)
 		operation = False
 	else:
